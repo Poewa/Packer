@@ -12,8 +12,6 @@
   Write-Output "Installing Boxstarter"
   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Get-Boxstarter -Force
 
-  Import-Module -Name Boxstarter.WinConfig
-
   Write-Output "Configuring Windows Settings"
   Disable-AutoLogon
   Disable-Hibernation

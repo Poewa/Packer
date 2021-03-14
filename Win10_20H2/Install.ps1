@@ -22,7 +22,7 @@ Write-Host "!!NOTICE!!If you don't have Hyper-V installed this won't work. Pleas
     else {
         Write-Host "Python3 is already installed. Continueing" -ForegroundColor Green
     }
-    if (!(Get-item C:\ISOS)) {
+    if (!(Get-item "C:\ISOS")) {
         Write-Host "C:\ISOS not present. Creating Directory"
         New-Item -ItemType Directory -Path C:\ISOS | Out-Null
         Write-Host "C:\ISOS created, put your ISOS here"
