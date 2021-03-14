@@ -1,14 +1,28 @@
-  # Runs after Windows Updates have been applied
-
+  #Installing Modules for provisioning
+  Write-Output "Installing modules"
   Install-Module WindowsBox.AutoLogon -Force
   Install-Module WindowsBox.Compact -Force
-  Install-Module WindowsBox.Explorer -Force
   Install-Module WindowsBox.Hibernation -Force
 
-Write-Output "Configuring Windows Settings"
+  #Install Choco
+  Write-Host "Installing Chocolatey"
+  Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+
+#Install BoxStarter
+  Write-Output "Installing Boxstarter"
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Get-Boxstarter -Force
+
+  Import-Module -Name Boxstarter.WinConfig
+
+  Write-Output "Configuring Windows Settings"
   Disable-AutoLogon
-  Set-ExplorerConfiguration
   Disable-Hibernation
+  Enable-UAC
+  Disable-BingSearch
+  Disable-GameBarTips
+  Enable-RemoteDesktop
+  Set-ExplorerOptions -showHiddenFilesFoldersDrives -showProtectedOSFiles -showFileExtensions
+
 
 
 
