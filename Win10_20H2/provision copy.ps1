@@ -1,5 +1,5 @@
   #Installing Modules for provisioning
-  Write-Host "Installing modules"
+  Write-Output "Installing modules"
   Install-Module WindowsBox.AutoLogon -Force
   Install-Module WindowsBox.Compact -Force
   Install-Module WindowsBox.Hibernation -Force
@@ -9,7 +9,7 @@
   Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
 
 #Install BoxStarter
-  Write-Host "Installing Boxstarter"
+  Write-Output "Installing Boxstarter"
   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Get-Boxstarter -Force
 
 
