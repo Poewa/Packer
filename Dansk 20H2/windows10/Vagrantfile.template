@@ -1,0 +1,6 @@
+﻿Vagrant.configure("2") do |config|
+  config.vm.box = "Windows 10"
+  config.vm.provider :hyperv do |hyperv|
+    hyperv.vmname = "Windows10"
+  end
+end

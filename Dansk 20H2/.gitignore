@@ -6,6 +6,7 @@
 /output-virtualbox-iso/
 /output-virtualbox-ovf/
 /output-hyperv-iso/
+/output-hyperv-iso_/
 /*.box
 /packer_cache/
 variables.json
