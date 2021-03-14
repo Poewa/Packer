@@ -4,8 +4,6 @@
   Install-Module WindowsBox.Compact -Force
   Install-Module WindowsBox.Explorer -Force
   Install-Module WindowsBox.Hibernation -Force
-  Install-Module WindowsBox.VagrantAccount -Force
-  Install-Module WindowsBox.VMGuestTools -Force
 
 Write-Output "Configuring Windows Settings"
   Disable-AutoLogon
