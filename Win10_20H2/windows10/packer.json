@@ -71,6 +71,26 @@
       "type": "windows-restart",
       "restart_timeout": "1h"
     },
+    
+    {
+      "type": "powershell",
+      "script": "Winupdate.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        10,
+        15
+      ]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "1h"
+    },
  
     {
       "type": "powershell",
@@ -89,23 +109,7 @@
     },
     {
       "type": "powershell",
-      "script": "Undo-WinRM.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
-      "valid_exit_codes": [
-        0,
-        1,
-        2,
-        3,
-        5,
-        10,
-        15
-      ]
-    },
-    
-    {
-      "type": "powershell",
-      "script": "sysprep.ps1",
+      "script": "Cleanup.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -118,6 +122,8 @@
         15
       ]
     }
+
+
     
     ]
 }
