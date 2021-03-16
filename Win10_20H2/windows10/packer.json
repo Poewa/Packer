@@ -122,8 +122,13 @@
         15
       ]
     }
-
-
     
+    ],
+    "post-processors": [
+      {
+        "type": "vagrant",
+        "output": "{{.Provider}}_windows10.box",
+        "vagrantfile_template": "windows10/vagrantfile.template"
+      }
     ]
 }
