@@ -7,3 +7,5 @@ Remove-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Boxstart
 Uninstall-Module WindowsBox.AutoLogon -Force
 Uninstall-Module WindowsBox.Compact -Force
 Uninstall-Module WindowsBox.Hibernation -Force
+Uninstall-Module WindowsBox.Network -Force
+

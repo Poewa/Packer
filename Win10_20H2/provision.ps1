@@ -4,7 +4,7 @@
   Install-Module WindowsBox.Compact -Force
   Install-Module WindowsBox.Hibernation -Force
 
-  #Install Choco
+  #Install Chocolatey
   Write-Host "Installing Chocolatey"
   Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
 
@@ -23,10 +23,11 @@
   Enable-RemoteDesktop
   Set-WindowsExplorerOptions -EnableShowFileExtensions
 
+  ##HAS NO EFFECT##
   #Removes en-US Keyborad from keyboard layouts. I have no clue why it's there.
-  $List = Get-WinUserLanguageList
-  $List.Remove("en-US")
-  Set-WinUserLanguageList $List -Force
+  #$List = Get-WinUserLanguageList
+  #$List.Remove("en-US")
+  #Set-WinUserLanguageList $List -Force
 
 
   if ($env:devtools -eq $true) {
