@@ -23,6 +23,12 @@
   Enable-RemoteDesktop
   Set-WindowsExplorerOptions -EnableShowFileExtensions
 
+
+#Install Office365 with userlocal as language.
+Write-Output "Installing Office 365"
+choco install microsoft-office-deployment --params="'/Product:O365BusinessRetail /Exclude:Lync'" -y
+
+
   ##HAS NO EFFECT##
   #Removes en-US Keyborad from keyboard layouts. I have no clue why it's there.
   #$List = Get-WinUserLanguageList
