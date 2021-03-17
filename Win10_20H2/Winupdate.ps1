@@ -1,4 +1,4 @@
-﻿if (!(get-module pswindowsupdate)) {
+﻿if (!(get-module pswindowsupdate -ListAvailable)) {
     Write-Output "Installing PSWindowsUpdate"
     Install-Module PSwindowsUpdate -Force
     Write-Host "Installing Updates"

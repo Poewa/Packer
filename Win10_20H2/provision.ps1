@@ -25,9 +25,10 @@
 
 
 #Install Office365 with userlocal as language.
-Write-Output "Installing Office 365"
 choco install microsoft-office-deployment --params="'/Product:O365BusinessRetail /Exclude:Lync'" -y
 
+#Install .NET3.5
+choco install dotnet3.5 -y
 
   ##HAS NO EFFECT##
   #Removes en-US Keyborad from keyboard layouts. I have no clue why it's there.

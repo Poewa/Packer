@@ -9,3 +9,4 @@ Uninstall-Module WindowsBox.Compact -Force
 Uninstall-Module WindowsBox.Hibernation -Force
 Uninstall-Module WindowsBox.Network -Force
 
+choco install undo-winrmconfig-at-shutdown -pre -y
