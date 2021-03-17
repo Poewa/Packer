@@ -7,11 +7,28 @@ Install-PackageProvider -Name Nuget -Force
 Install-Module WindowsBox.Network -Force
 Set-NetworkToPrivate
 
-wait 30
 
-Install-Module WindowsBox.WinRM -Force
-Enable-InsecureWinRM
+wait 45
 
-wait 30
+#Enables insecure WinRM. This should be disabled later.
+netsh advfirewall firewall set rule group="remote administration" new enable=yes
+netsh advfirewall firewall add rule name="Open Port 5985" dir=in action=allow protocol=TCP localport=5985
+
+winrm quickconfig -q
+winrm quickconfig -transport:http
+winrm set winrm/config '@{MaxTimeoutms="7200000"}'
+winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="0"}'
+winrm set winrm/config/winrs '@{MaxProcessesPerShell="0"}'
+winrm set winrm/config/winrs '@{MaxShellsPerUser="0"}'
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
+winrm set winrm/config/client/auth '@{Basic="true"}'
+
+net stop winrm
+sc.exe config winrm start= auto
+net start winrm
+
+
+
 #This might be rendundant
-Start-Job -ScriptBlock { C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoLogo -ExecutionPolicy Bypass -File a:\winrm.ps1 }
+#Start-Job -ScriptBlock { C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoLogo -ExecutionPolicy Bypass -File a:\winrm.ps1 }
