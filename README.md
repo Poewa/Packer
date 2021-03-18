@@ -5,6 +5,7 @@
 3. Tilpas Variables.json i mappen windows10, så det passer til din IP og ISO navn.
 4. Tilpas i autounattend.xml i mappen windows10
 5. Kør build.ps1
-6. Magic :brown_heart:
+6. Fix mine evt. fejl :smile:
+7. Magic :brown_heart:
 
 
