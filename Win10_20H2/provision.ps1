@@ -39,6 +39,8 @@ choco install dotnet3.5 -y
   #Sætter Startmenu
   Write-Output "Installing default startmenu layout"
   Import-StartLayout -LayoutPath "C:\Startmenu.xml" -MountPath "C:\"
+  Remove-Item -Path "C:\startmenu.xml" 
+
 
   if ($env:apps -eq $true) {
     Write-Output "Installing optional software"
