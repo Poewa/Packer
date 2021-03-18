@@ -36,12 +36,12 @@ choco install dotnet3.5 -y
   #$List.Remove("en-US")
   #Set-WinUserLanguageList $List -Force
 
+  #Sætter Startmenu
+  Write-Output "Installing default startmenu layout"
+  Import-StartLayout -LayoutPath "C:\Startmenu.xml" -MountPath "C:\"
 
-  if ($env:devtools -eq $true) {
+  if ($env:apps -eq $true) {
     Write-Output "Installing optional software"
-    # Install Linux subsystem
-    Install-Module WindowsBox.DevMode -Force
-    Enable-DevMode
 
     # Install chocolatey and use it to install dev tools
     choco install googlechrome -y

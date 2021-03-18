@@ -3,7 +3,7 @@
     "iso_url": "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
     "iso_checksum": "0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351",
     "headless": "true",
-    "devtools": "false"
+    "apps": "false"
   },
   "builders": [
     {
@@ -18,7 +18,6 @@
         "windows10/Autounattend.xml",
         "firstboot.ps1"
       ],
-      "http_directory": "windows10/lp",
       "headless": "{{user `headless`}}",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
@@ -89,6 +88,11 @@
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
+    },
+    {
+      "type": "file",
+      "source": "startmenu.xml",
+      "destination": "C:\\startmenu.xml"
     },
  
     {

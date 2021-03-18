@@ -10,7 +10,7 @@ Set-NetworkToPrivate
 
 wait 45
 
-#Enables insecure WinRM. This should be disabled later.
+#Enables insecure WinRM. This is being undone in the cleanup.ps1 script.
 netsh advfirewall firewall set rule group="remote administration" new enable=yes
 netsh advfirewall firewall add rule name="Open Port 5985" dir=in action=allow protocol=TCP localport=5985
 
