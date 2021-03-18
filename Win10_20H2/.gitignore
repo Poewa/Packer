@@ -9,5 +9,4 @@
 /output-hyperv-iso_/
 /*.box
 /packer_cache/
-variables.json
 Variable_engelsks.json
