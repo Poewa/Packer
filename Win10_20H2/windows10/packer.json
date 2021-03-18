@@ -121,6 +121,21 @@
         10,
         15
       ]
+    },
+    {
+      "type": "powershell",
+      "script": "Undo-WinRM.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        10,
+        15
+      ]
     }
  
 
