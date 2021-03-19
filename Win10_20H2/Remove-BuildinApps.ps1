@@ -118,7 +118,7 @@ Process {
             $AppProvisioningPackageName = Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like $App } | Select-Object -ExpandProperty PackageName -First 1
 
             # Attempt to remove AppxPackage
-            if ($AppPackageFullName -ne $null) {
+            if ($null -ne $AppPackageFullName) {
                 try {
                     Write-LogEntry -Value "Removing AppxPackage: $($AppPackageFullName)"
                     Remove-AppxPackage -Package $AppPackageFullName -ErrorAction Stop | Out-Null
@@ -132,7 +132,7 @@ Process {
             }
 
             # Attempt to remove AppxProvisioningPackage
-            if ($AppProvisioningPackageName -ne $null) {
+            if ($null -ne $AppProvisioningPackageName) {
                 try {
                     Write-LogEntry -Value "Removing AppxProvisioningPackage: $($AppProvisioningPackageName)"
                     Remove-AppxProvisionedPackage -PackageName $AppProvisioningPackageName -Online -ErrorAction Stop | Out-Null
