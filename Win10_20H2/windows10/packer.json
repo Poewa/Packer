@@ -128,7 +128,7 @@
     },
     {
       "type": "powershell",
-      "script": "Undo-WinRM.ps1",
+      "script": "Sysprep.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -141,6 +141,7 @@
         15
       ]
     }
+    
  
 
   ]
