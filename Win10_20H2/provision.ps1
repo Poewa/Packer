@@ -12,7 +12,7 @@
   Write-Output "Installing Boxstarter"
   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Get-Boxstarter -Force
 
-
+ 
   #Configures common Windows settings
   Write-Output "Configuring Windows Settings"
   Disable-AutoLogon
@@ -22,6 +22,10 @@
   Disable-GameBarTips
   Enable-RemoteDesktop
   Set-WindowsExplorerOptions -EnableShowFileExtensions
+  #Disable Cortana
+
+  New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\' -Name 'Windows Search' | Out-Null
+  New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name 'AllowCortana' -PropertyType DWORD -Value '0' | Out-Null
 
 
 #Install Office365 with userlocal as language.
@@ -36,12 +40,12 @@ choco install dotnet3.5 -y
   #$List.Remove("en-US")
   #Set-WinUserLanguageList $List -Force
 
-  #Sætter Startmenu
+  #Imports the default startmenu. The file has been placed by packer.
   Write-Output "Installing default startmenu layout"
   Import-StartLayout -LayoutPath "C:\Startmenu.xml" -MountPath "C:\"
   Remove-Item -Path "C:\startmenu.xml" 
 
-
+  #If packer variable is set to true install these programs.
   if ($env:apps -eq $true) {
     Write-Output "Installing optional software"
 
