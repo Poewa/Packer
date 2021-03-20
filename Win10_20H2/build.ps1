@@ -1,10 +1,19 @@
-﻿#
+﻿[CmdletBinding()]
+param (
+    [Parameter()]
+    [Boolean]
+    $convertToWIM = $false 
+)
+#
 write-host "Warning this script will kill all python processes when done" -ForegroundColor Red
 write-host "The script will also build up http servers over time if not allowed to finish. You can kill them with get-process python | kill-process" -ForegroundColor Red
 
 
-#Defines ISO location
+#Defines Variables
 $WorkingDirectory = "C:\ISOS"
+$ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Golden Dansk.vhdx"
+$ImageOutput = "C:\temp\Win10_20H2_DA.wim"
+$MountPath="C:\mount"
 
 #Starting simple http server for ISO transfer.
 write-host "Starting http server on port 8080" -ForegroundColor Green
@@ -19,16 +28,27 @@ start-process packer -ArgumentList "build -var-file windows10/variables.json win
 Write-Host "Killing Python process to stop http server" -ForegroundColor Green
 Get-Process python | Stop-Process
 
-#set the VHD mount folder
-#$Mount="c:\mount"
-#create a folder c:\mount
-#Mkdir $Mount
-#New-Item -ItemType Directory -Path $Mount
-#mount the c:\temp\spiderip.vhd to $Mount folder
+if($convertToWIM = $true)
+{
+    
+    #create a folder c:\mount
+    if(Get-Item "$MountPath")
+    {
+        Write-Host "Mount directory already present"
+    }
+    else
+    {
+        New-Item -ItemType Directory -Path $MountPath
+    }
 
-#Mount-WindowsImage -ImagePath "c:\temp\spiderip.vhd" -Path "$Mount" -Index 1
-#Create new Wim image to c:\temp\spiderip.wim folder
 
-#New-WindowsImage -CapturePath "$Mount" -Name "spiderip image" -ImagePath "c:\temp\spiderip.wim" -Description "spiderip image" -Verify
-#dismount  the $Mount folder
-#Dismount-WindowsImage -Path "$Mount" -Discard
+
+    #mount the c:\temp\spiderip.vhd to $Mount folder
+    Mount-WindowsImage -ImagePath "$ImagePath"  -Path "$MountPath" -Index 1
+
+
+    #Create new Wim image to c:\temp\spiderip.wim folder
+    New-WindowsImage -CapturePath "$MountPath" -Name "Win10_20H2_DA" -ImagePath "$ImageOutput" -Description "Windows 10 image med dansk sprog" -Verbose
+    #dismount  the $Mount folder
+    Dismount-WindowsImage -Path "$MountPath" -Discard
+}
