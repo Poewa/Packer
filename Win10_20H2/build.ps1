@@ -13,7 +13,7 @@ write-host "The script will also build up http servers over time if not allowed 
 $WorkingDirectory = "C:\ISOS"
 $ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Golden Dansk.vhdx"
 $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
-$MountPath="C:\mount"
+$MountPath = "C:\mount"
 
 #Starting simple http server for ISO transfer.
 write-host "Starting http server on port 8080" -ForegroundColor Green
@@ -28,16 +28,13 @@ start-process packer -ArgumentList "build -var-file windows10/variables.json win
 Write-Host "Killing Python process to stop http server" -ForegroundColor Green
 Get-Process python | Stop-Process
 
-if($convertToWIM = $true)
-{
+if ($convertToWIM = $true) {
     
     #create a folder c:\mount
-    if(Get-Item "$MountPath")
-    {
+    if (Get-Item "$MountPath") {
         Write-Host "Mount directory already present"
     }
-    else
-    {
+    else {
         New-Item -ItemType Directory -Path $MountPath
     }
 
