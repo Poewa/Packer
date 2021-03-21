@@ -10,10 +10,15 @@ write-host "The script will also build up http servers over time if not allowed 
 
 
 #Defines Variables
+###########################
 $WorkingDirectory = "C:\ISOS"
 $ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Golden Dansk.vhdx"
 $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
+$packerArgument = "build -var-file windows10/variables_English.json windows10/packer_English.json"
+###########################
+
+
 
 #Starting simple http server for ISO transfer.
 write-host "Starting http server on port 8080" -ForegroundColor Green
@@ -22,7 +27,7 @@ Start-Sleep 3
 
 #Starting the build process
 Write-Host "starting packer" -ForegroundColor Green
-start-process packer -ArgumentList "build -var-file windows10/variables.json windows10/packer.json" -NoNewWindow -Wait
+start-process packer -ArgumentList $packerArgument -NoNewWindow -Wait
 
 #killing ALL python processes
 Write-Host "Killing Python process to stop http server" -ForegroundColor Green

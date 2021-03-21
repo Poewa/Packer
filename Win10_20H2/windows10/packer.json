@@ -67,7 +67,7 @@
     },
     {
       "type": "powershell",
-      "script": "Remove-BuildinApps.ps1",
+      "script": "Scripts/Remove-BuildinApps.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -87,7 +87,7 @@
     
     {
       "type": "powershell",
-      "script": "Winupdate.ps1",
+      "script": "Scripts/Winupdate.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -112,7 +112,7 @@
  
     {
       "type": "powershell",
-      "script": "provision.ps1",
+      "script": "Scripts/provision.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -128,7 +128,7 @@
     
     {
       "type": "powershell",
-      "script": "Cleanup.ps1",
+      "script": "Scripts/Cleanup.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -143,7 +143,7 @@
     },
     {
       "type": "powershell",
-      "script": "Sysprep.ps1",
+      "script": "Scripts/Sysprep.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [

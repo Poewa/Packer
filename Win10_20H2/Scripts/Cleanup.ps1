@@ -26,4 +26,4 @@ Uninstall-Module WindowsBox.Hibernation -Force
 Uninstall-Module WindowsBox.Network -Force
 
 #Makes sure WinRM is in a secure state and ready for reconfiguration
-choco install undo-winrmconfig-during-shutdown -y
+#choco install undo-winrmconfig-during-shutdown -y
