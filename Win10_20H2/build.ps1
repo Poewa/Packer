@@ -15,7 +15,7 @@ $WorkingDirectory = "C:\ISOS"
 $ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Golden Dansk.vhdx"
 $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
-$packerArgument = "build -var-file windows10/variables_English.json windows10/packer_English.json"
+$packerArgument = "build -var-file windows10/variables.json windows10/packer.json"
 ###########################
 
 

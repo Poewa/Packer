@@ -106,7 +106,7 @@
     },
     {
       "type": "file",
-      "source": "startmenu.xml",
+      "source": "Windows10/startmenu.xml",
       "destination": "C:\\startmenu.xml"
     },
  
