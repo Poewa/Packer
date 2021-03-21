@@ -1,9 +1,4 @@
-﻿[CmdletBinding()]
-param (
-    [Parameter()]
-    [Boolean]
-    $convertToWIM = $false 
-)
+﻿
 #
 write-host "Warning this script will kill all python processes when done" -ForegroundColor Red
 write-host "The script will also build up http servers over time if not allowed to finish. You can kill them with get-process python | kill-process" -ForegroundColor Red
@@ -16,6 +11,7 @@ $ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Gol
 $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
 $packerArgument = "build -var-file windows10/variables.json windows10/packer.json"
+$convertToWIM = $true
 ###########################
 
 
@@ -33,7 +29,7 @@ start-process packer -ArgumentList $packerArgument -NoNewWindow -Wait
 Write-Host "Killing Python process to stop http server" -ForegroundColor Green
 Get-Process python | Stop-Process
 
-if ($convertToWIM = $true) {
+if ($convertToWIM -eq $true) {
     
     #create a folder c:\mount
     if (Get-Item "$MountPath") {
