@@ -16,7 +16,7 @@
       "cpus": "2",
       "floppy_files": [
         "windows10/Autounattend.xml",
-        "firstboot.ps1"
+        "Scripts/firstboot.ps1"
       ],
       "headless": "{{user `headless`}}",
       "iso_url": "{{user `iso_url`}}",
@@ -31,7 +31,7 @@
     
     {
       "type": "powershell",
-      "script": "Winupdate.ps1",
+      "script": "Scripts/Winupdate.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -52,7 +52,7 @@
     },
     {
       "type": "powershell",
-      "script": "Winupdate.ps1",
+      "script": "Scripts/Winupdate.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
