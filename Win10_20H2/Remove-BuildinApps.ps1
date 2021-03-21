@@ -76,78 +76,9 @@ Begin {
 }
 Process {
     # Functions
-    function Write-LogEntry {
-        param(
-            [parameter(Mandatory=$true, HelpMessage="Value added to the RemovedApps.log file.")]
-            [ValidateNotNullOrEmpty()]
-            [string]$Value,
+    
 
-            [parameter(Mandatory=$false, HelpMessage="Name of the log file that the entry will written to.")]
-            [ValidateNotNullOrEmpty()]
-            [string]$FileName = "RemovedApps.log"
-        )
-        # Determine log file location
-        $LogFilePath = Join-Path -Path $env:windir -ChildPath "Temp\$($FileName)"
-
-        # Add value to log file
-        try {
-            Out-File -InputObject $Value -Append -NoClobber -Encoding Default -FilePath $LogFilePath -ErrorAction Stop
-        }
-        catch [System.Exception] {
-            Write-Warning -Message "Unable to append log entry to $($FileName) file"
-        }
-    }
-
-    # Initial logging
-    Write-LogEntry -Value "Starting built-in AppxPackage, AppxProvisioningPackage and Feature on Demand V2 removal process"
-
-    # Determine provisioned apps
-    $AppArrayList = Get-AppxProvisionedPackage -Online | Select-Object -ExpandProperty DisplayName
-
-    # Loop through the list of appx packages
-    foreach ($App in $AppArrayList) {
-        Write-LogEntry -Value "Processing appx package: $($App)"
-
-        # If application name not in appx package white list, remove AppxPackage and AppxProvisioningPackage
-        if (($App -in $WhiteListedApps)) {
-            Write-LogEntry -Value "Skipping excluded application package: $($App)"
-        }
-        else {
-            # Gather package names
-            $AppPackageFullName = Get-AppxPackage -Name $App | Select-Object -ExpandProperty PackageFullName -First 1
-            $AppProvisioningPackageName = Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like $App } | Select-Object -ExpandProperty PackageName -First 1
-
-            # Attempt to remove AppxPackage
-            if ($null -ne $AppPackageFullName) {
-                try {
-                    Write-LogEntry -Value "Removing AppxPackage: $($AppPackageFullName)"
-                    Remove-AppxPackage -Package $AppPackageFullName -ErrorAction Stop | Out-Null
-                }
-                catch [System.Exception] {
-                    Write-LogEntry -Value "Removing AppxPackage '$($AppPackageFullName)' failed: $($_.Exception.Message)"
-                }
-            }
-            else {
-                Write-LogEntry -Value "Unable to locate AppxPackage for current app: $($App)"
-            }
-
-            # Attempt to remove AppxProvisioningPackage
-            if ($null -ne $AppProvisioningPackageName) {
-                try {
-                    Write-LogEntry -Value "Removing AppxProvisioningPackage: $($AppProvisioningPackageName)"
-                    Remove-AppxProvisionedPackage -PackageName $AppProvisioningPackageName -Online -ErrorAction Stop | Out-Null
-                }
-                catch [System.Exception] {
-                    Write-LogEntry -Value "Removing AppxProvisioningPackage '$($AppProvisioningPackageName)' failed: $($_.Exception.Message)"
-                }
-            }
-            else {
-                Write-LogEntry -Value "Unable to locate AppxProvisioningPackage for current app: $($App)"
-            }
-        }
-    }
-
-    Write-LogEntry -Value "Starting Features on Demand V2 removal process"
+    Write-Output "Starting Features on Demand V2 removal process"
 
     # Get Features On Demand that should be removed
     try {
@@ -163,7 +94,7 @@ Process {
 
         foreach ($Feature in $OnDemandFeatures) {
             try {
-                Write-LogEntry -Value "Removing Feature on Demand V2 package: $($Feature)"
+                Write-Output "Removing Feature on Demand V2 package: $($Feature)"
 
                 # Handle cmdlet limitations for older OS builds
                 if ($OSBuildNumber -le "16299") {
@@ -174,14 +105,14 @@ Process {
                 }
             }
             catch [System.Exception] {
-                Write-LogEntry -Value "Removing Feature on Demand V2 package failed: $($_.Exception.Message)"
+                Write-Output "Removing Feature on Demand V2 package failed: $($_.Exception.Message)"
             }
         }    
     }
     catch [System.Exception] {
-        Write-LogEntry -Value "Attempting to list Feature on Demand V2 packages failed: $($_.Exception.Message)"
+        Write-Output "Attempting to list Feature on Demand V2 packages failed: $($_.Exception.Message)"
     }
 
     # Complete
-    Write-LogEntry -Value "Completed built-in AppxPackage, AppxProvisioningPackage and Feature on Demand V2 removal process"
+    Write-Output "Completed built-in AppxPackage, AppxProvisioningPackage and Feature on Demand V2 removal process"
 }
