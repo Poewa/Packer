@@ -1,5 +1,4 @@
 ﻿function Install-Prereqs {
-Write-Host "!!NOTICE!!If you don't have Hyper-V installed this won't work. Please install Hyper-V it is not a part of this installation script!!NOTICE!!" -ForegroundColor Red
 
     if (!(Get-Command choco.exe)) {
         Write-host "Looks like Choco is not installed. Installing now" -ForegroundColor Yellow
@@ -30,7 +29,19 @@ Write-Host "!!NOTICE!!If you don't have Hyper-V installed this won't work. Pleas
     else {
         Write-Host "C:\ISOS Already present, put your ISOS here" -ForegroundColor Green
     }
-Write-Host "All Prereqs have been installed. Run the build.ps1 to get started. You might want to edit the variables files in the packer folder to point to your ISO" -ForegroundColor Green
+
+    if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V).State -eq "Disabled") {
+
+    
+        Write-Host "Installing Hyper-V" -ForegroundColor Yellow
+        Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All  
+        Write-Host "Hyper-V has been installed. You need to restart your computer." -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "Hyper-V already installed" -ForegroundColor Green
+    }
+
+    Write-Host "All Prereqs have been installed. Run the build.ps1 to get started. You might want to edit the variables files in the packer folder to point to your ISO" -ForegroundColor Green
 }
 Install-Prereqs
 
