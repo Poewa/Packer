@@ -22,8 +22,8 @@
   Disable-GameBarTips
   Enable-RemoteDesktop
   Set-WindowsExplorerOptions -EnableShowFileExtensions
+  
   #Disable Cortana
-
   New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\' -Name 'Windows Search' | Out-Null
   New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name 'AllowCortana' -PropertyType DWORD -Value '0' | Out-Null
 
@@ -33,12 +33,6 @@ choco install microsoft-office-deployment --params="'/Product:O365BusinessRetail
 
 #Install .NET3.5
 choco install dotnet3.5 -y
-
-  ##HAS NO EFFECT##
-  #Removes en-US Keyborad from keyboard layouts. I have no clue why it's there.
-  #$List = Get-WinUserLanguageList
-  #$List.Remove("en-US")
-  #Set-WinUserLanguageList $List -Force
 
   #Imports the default startmenu. The file has been placed by packer.
   Write-Output "Installing default startmenu layout"
