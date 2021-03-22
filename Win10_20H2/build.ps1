@@ -1,9 +1,4 @@
 ﻿
-#
-write-host "Warning this script will kill all python processes when done" -ForegroundColor Red
-write-host "The script will also build up http servers over time if not allowed to finish. You can kill them with get-process python | kill-process" -ForegroundColor Red
-
-
 #Defines Variables
 ###########################
 $WorkingDirectory = "C:\ISOS"
@@ -12,13 +7,16 @@ $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
 $packerArgument = "build -var-file windows10/variables.json windows10/packer.json"
 $convertToWIM = $true
+$port = "8080"
+$wimName = "Win10_20H2_DA"
 ###########################
 
-
+write-host "Warning this script will kill all python processes when done" -ForegroundColor Red
+write-host "The script will also build up http servers over time if not allowed to finish. You can kill them with get-process python | kill-process" -ForegroundColor Red
 
 #Starting simple http server for ISO transfer.
-write-host "Starting http server on port 8080" -ForegroundColor Green
-Start-Process python -WorkingDirectory $WorkingDirectory -ArgumentList "-m http.server 8080" -WindowStyle Hidden
+write-host "Starting http server on port $port" -ForegroundColor Green
+Start-Process python -WorkingDirectory $WorkingDirectory -ArgumentList "-m http.server $port" -WindowStyle Hidden
 Start-Sleep 3
 
 #Starting the build process
@@ -38,15 +36,11 @@ if ($convertToWIM -eq $true) {
     else {
         New-Item -ItemType Directory -Path $MountPath
     }
-
-
-
-    #mount the c:\temp\spiderip.vhd to $Mount folder
+    Write-Host "Mounting VHDX" -ForegroundColor Green
     Mount-WindowsImage -ImagePath "$ImagePath"  -Path "$MountPath" -Index 1
-
-
-    #Create new Wim image to c:\temp\spiderip.wim folder
-    New-WindowsImage -CapturePath "$MountPath" -Name "Win10_20H2_DA" -ImagePath "$ImageOutput" -Description "Windows 10 image med dansk sprog" -Verbose
+    Write-Host "Creating WIM file. This might take awhile" -ForegroundColor Green
+    New-WindowsImage -CapturePath "$MountPath" -Name $wimName -ImagePath "$ImageOutput" -Verbose
     #dismount  the $Mount folder
+    Write-Host "Dismounting VHDX" -ForegroundColor Green
     Dismount-WindowsImage -Path "$MountPath" -Discard
 }

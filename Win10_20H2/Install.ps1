@@ -1,27 +1,27 @@
 ﻿function Install-Prereqs {
 
-    if (!(Get-Command choco.exe |Out-Null)) {
+    if (!(Get-Command choco.exe)) {
         Write-host "Looks like Choco is not installed. Installing now" -ForegroundColor Yellow
         Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
     }
     else {
         Write-Host "Choco is already installed. Continueing" -ForegroundColor Green
     }
-    if (!(Get-Command packer.exe | Out-Null)) {
+    if (!(Get-Command packer.exe )) {
         Write-host "Looks like Packer is not installed. Installing now" -ForegroundColor Yellow
         choco install packer -y
     }
     else {
         Write-Host "Packer is already installed. Continueing" -ForegroundColor Green
     }
-    if (!(Get-Command python3.exe | Out-Null)) {
+    if (!(Get-Command python3.exe )) {
         Write-host "Looks like Python3 is not installed. Installing now" -ForegroundColor Yellow
         choco install Python3 -y
     }
     else {
         Write-Host "Python3 is already installed. Continueing" -ForegroundColor Green
     }
-    if (!(Get-item "C:\ISOS" | Out-Null)) {
+    if (!(Get-item "C:\ISOS" )) {
         Write-Host "C:\ISOS not present. Creating Directory"
         New-Item -ItemType Directory -Path C:\ISOS | Out-Null
         Write-Host "C:\ISOS created, put your ISOS here"
