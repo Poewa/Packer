@@ -31,7 +31,7 @@ if ($convertToWIM -eq $true) {
     
     #create a folder c:\mount
     if (Get-Item "$MountPath") {
-        Write-Host "Mount directory already present"
+        Write-Host "Mount directory already present" -ForegroundColor Green
     }
     else {
         New-Item -ItemType Directory -Path $MountPath

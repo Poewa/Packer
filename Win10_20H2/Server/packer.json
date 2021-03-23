@@ -1,0 +1,58 @@
+{ 
+  "variables": {
+    "iso_url": "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
+    "iso_checksum": "0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351",
+    "headless": "true",
+    "apps": "false"
+  },
+  "builders": [
+    {
+      "vm_name": "SRV2022 Eval",
+      "type": "hyperv-iso",
+      "communicator": "winrm",
+      "disk_size": 61440,
+      "memory": 4096,
+      "switch_name": "LAN",
+      "cpus": "2",
+      "floppy_files": [
+        "Server/Autounattend.xml",
+        "Scripts/firstboot.ps1"
+      ],
+      "headless": "{{user `headless`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "3h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
+    }
+  ],
+  "provisioners": [
+    
+    {
+      "type": "powershell",
+      "script": "Scripts/Winupdate.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        10,
+        15
+      ]
+    },
+    
+    
+    {
+      "type": "windows-restart",
+      "restart_timeout": "1h"
+    }
+    
+ 
+
+  ]
+   
+}
