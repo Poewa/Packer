@@ -1,28 +1,32 @@
 { 
   "variables": {
-    "iso_url": "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
-    "iso_checksum": "0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351",
     "headless": "true",
-    "apps": "false"
+    "apps": "false",
+    "winrm_username":"vagrant",
+    "winrm_password": "vagrant",
+    "switch_name": "Internal with internet",
+    "iso_url": "http://localhost:8080/SW_DVD9_Win_Server_STD_CORE_2019_1809.13_64Bit_English_DC_STD_MLF_X22-57176.ISO",
+    "iso_checksum": "436AF9C7BD0330B1860A53E58407778AAE804FB22FF4816FF4E669B23E3FEDFC"
   },
+  
   "builders": [
     {
-      "vm_name": "20H2 Golden Dansk",
+      "vm_name": "20H2 VagrantBox",
       "type": "hyperv-iso",
       "communicator": "winrm",
       "disk_size": 61440,
       "memory": 4096,
-      "switch_name": "LAN",
+      "switch_name": "{{user `switch_name`}}",
       "cpus": "2",
       "floppy_files": [
-        "windows10/Autounattend.xml",
+        "windows10/English/Autounattend.xml",
         "Scripts/firstboot.ps1"
       ],
       "headless": "{{user `headless`}}",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "winrm_username": "vagrant",
-      "winrm_password": "vagrant",
+      "winrm_username": "{{user `winrm_username`}}",
+      "winrm_password": "{{user `winrm_password`}}",
       "winrm_timeout": "3h",
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
     }
@@ -32,16 +36,8 @@
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
       "valid_exit_codes": [
-        0,
-        1,
-        2,
-        3,
-        5,
-        10,
-        15
+        0
       ]
     },
     
@@ -53,8 +49,6 @@
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
       "valid_exit_codes": [
         0,
         1,
@@ -68,8 +62,6 @@
     {
       "type": "powershell",
       "script": "Scripts/Remove-BuildinApps.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
       "valid_exit_codes": [
         0
       ]
@@ -82,8 +74,6 @@
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
       "valid_exit_codes": [
         0
       ]
@@ -111,24 +101,19 @@
     {
       "type": "powershell",
       "script": "Scripts/Cleanup.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
-      "valid_exit_codes": [
-        0
-      ]
-    },
-    {
-      "type": "powershell",
-      "script": "Scripts/Sysprep.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
       "valid_exit_codes": [
         0
       ]
     }
-    
- 
 
+
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "{{.Provider}}_windows10.box",
+      "vagrantfile_template": "windows10/vagrantfile.template"
+    }
   ]
    
 }
