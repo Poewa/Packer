@@ -1,8 +1,0 @@
-﻿Vagrant.configure(2) do |config|
-  config.vm.box = "win10us"
-  config.vm.synced_folder '.', '/vagrant', disabled: true
-  config.vm.provider "hyperv"
-  config.vm.communicator = "winrm"
-  config.winrm.username = "vagrant"
-  config.winrm.password = "vagrant"
-end
