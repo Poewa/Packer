@@ -6,12 +6,14 @@
     "winrm_password": "vagrant",
     "switch_name": "Internal with internet",
     "iso_url": "http://localhost:8080/SW_DVD9_Win_Server_STD_CORE_2019_1809.13_64Bit_English_DC_STD_MLF_X22-57176.ISO",
-    "iso_checksum": "436AF9C7BD0330B1860A53E58407778AAE804FB22FF4816FF4E669B23E3FEDFC"
+    "iso_checksum": "436AF9C7BD0330B1860A53E58407778AAE804FB22FF4816FF4E669B23E3FEDFC",
+    "vm_name": "20H2 VagrantBox"
+
   },
 
   "builders": [
     {
-      "vm_name": "20H2 VagrantBox",
+      "vm_name": "{{user `vm_name`}}",
       "type": "hyperv-iso",
       "communicator": "winrm",
       "disk_size": 61440,
