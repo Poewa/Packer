@@ -27,6 +27,9 @@
   New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\' -Name 'Windows Search' | Out-Null
   New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name 'AllowCortana' -PropertyType DWORD -Value '0' | Out-Null
 
+  #Disables IE
+  Disable-WindowsOptionalFeature -FeatureName Internet-Explorer-Optional-amd64 –Online -NoRestart
+
 
 #Install Office365 with userlocal as language.
 choco install microsoft-office-deployment --params="'/Product:O365BusinessRetail /Exclude:Lync'" -y

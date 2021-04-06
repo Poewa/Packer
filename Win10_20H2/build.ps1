@@ -2,10 +2,10 @@
 #Defines Variables
 ###########################
 $WorkingDirectory = "C:\ISOS"
-$ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 Golden Dansk.vhdx"
+$ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\v20H2 VagrantBox.vhdx"
 $ImageOutput = "C:\temp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
-$packerArgument = "build -var-file windows10/variables_english.json windows10/packer.json"
+$packerArgument = "build -var-file windows10/variables.json windows10/packer.json"
 $convertToWIM = $false
 $port = "8080"
 $wimName = "Win10_20H2_DA"
