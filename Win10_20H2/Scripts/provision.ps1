@@ -32,7 +32,7 @@
 
   #Disables Xbox related apps and removes them.
   Get-AppxPackage -allusers |Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
-  Get-ProvisionedAppPackage -Online | Where-Object {$_.Name -like "*Xbox*" } | Remove-ProvisionedAppPackage -Online  
+  Get-ProvisionedAppPackage -Online | Where-Object {$_.Name -like "*Xbox*" } | Remove-ProvisionedAppPackage -Onliner  
 
 #Install Office365 with userlocal as language.
 choco install microsoft-office-deployment --params="'/Product:O365BusinessRetail /Exclude:Lync'" -y
