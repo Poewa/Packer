@@ -1,6 +1,6 @@
 { 
   "variables": {
-    "headless": "false",
+    "headless": "true",
     "apps": "false",
     "winrm_username":"vagrant",
     "winrm_password": "vagrant",
@@ -21,7 +21,7 @@
       "switch_name": "{{user `switch_name`}}",
       "cpus": "2",
       "floppy_files": [
-        "windows10/English/Autounattend.xml",
+        "windows10/Autounattend.xml",
         "Scripts/firstboot.ps1"
       ],
       "headless": "{{user `headless`}}",
@@ -34,7 +34,7 @@
     }
   ],
   "provisioners": [
-    
+        
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
@@ -44,12 +44,11 @@
         0
       ]
     },
-    
-    
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
     },
+
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
@@ -59,6 +58,13 @@
         0
       ]
     },
+
+    {
+      "type": "windows-restart",
+      "restart_timeout": "1h"
+    },
+
+
     {
       "type": "powershell",
       "script": "Scripts/Remove-BuildinApps.ps1",
@@ -68,20 +74,7 @@
         0
       ]
     },
-    {
-      "type": "windows-restart",
-      "restart_timeout": "1h"
-    },
     
-    {
-      "type": "powershell",
-      "script": "Scripts/Winupdate.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
-      "valid_exit_codes": [
-        0
-      ]
-    },
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
@@ -101,6 +94,12 @@
         0
       ]
     },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "1h"
+    },
+   
+
     
     {
       "type": "powershell",
@@ -110,7 +109,17 @@
       "valid_exit_codes": [
         0
       ]
+    },
+    {
+      "type": "powershell",
+      "script": "Scripts/Undo-WinRM.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0
+      ]
     }
+
 
 
   ]
