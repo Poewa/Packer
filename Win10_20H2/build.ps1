@@ -2,7 +2,7 @@
 #Defines Variables
 ###########################
 $WorkingDirectory = "C:\ISOS"
-$ImagePath = "C:\VM\20H2DK_Golden\20H2 DK\Virtual Hard Disks\20H2 DK.vhdx"
+$ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\20H2 DK.vhdx"
 $ImageOutput = "C:\tmp\Win10_20H2_DA.wim"
 $MountPath = "C:\mount"
 $packerArgument = "build -var-file windows10/variables.json windows10/packer.json"
