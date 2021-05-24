@@ -41,7 +41,7 @@
         Write-Host "Hyper-V already installed" -ForegroundColor Green
     }
 
-    Write-Host "All Prereqs have been installed. Run the build.ps1 to get started. You might want to edit the variables files in the packer folder to point to your ISO" -ForegroundColor Green
+    Write-Host "All Prereqs have been installed. Run the build.ps1 to get started. You might want to edit the variables files and the build file to suite your needs" -ForegroundColor Green
 }
 Install-Prereqs
 
