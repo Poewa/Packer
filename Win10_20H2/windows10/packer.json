@@ -1,16 +1,12 @@
-{ 
+{
   "variables": {
     "headless": "true",
     "apps": "false",
-    "winrm_username":"vagrant",
+    "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "switch_name": "External",
-    "iso_url": "http://localhost:8080/SW_DVD9_Win_Server_STD_CORE_2019_1809.13_64Bit_English_DC_STD_MLF_X22-57176.ISO",
-    "iso_checksum": "436AF9C7BD0330B1860A53E58407778AAE804FB22FF4816FF4E669B23E3FEDFC",
-    "vm_name": "21H1 DK"
-
+    "vm_name": "21H2 DK"
   },
-
   "builders": [
     {
       "vm_name": "{{user `vm_name`}}",
@@ -21,9 +17,9 @@
       "switch_name": "{{user `switch_name`}}",
       "cpus": "2",
       "floppy_files": [
-        "windows10/Autounattend.xml",
-        "windows10/unattend.xml",
-        "Scripts/firstboot.ps1"
+        "F:\\Packer\\Win10_20H2\\windows10\\Autounattend.xml",
+        "F:\\Packer\\Win10_20H2\\windows10\\unattend.xml",
+        "F:\\Packer\\Win10_20H2\\scripts\\firstboot.ps1"
       ],
       "headless": "{{user `headless`}}",
       "iso_url": "{{user `iso_url`}}",
@@ -35,22 +31,6 @@
     }
   ],
   "provisioners": [
-            
-    {
-      "type": "powershell",
-      "script": "Scripts/Winupdate.ps1",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant",
-      "valid_exit_codes": [
-        0
-      ]
-    },
-
-    {
-      "type": "windows-restart",
-      "restart_timeout": "1h"
-    },
-
     {
       "type": "powershell",
       "script": "Scripts/Winupdate.ps1",
@@ -64,16 +44,36 @@
       "type": "windows-restart",
       "restart_timeout": "1h"
     },
-
+    {
+      "type": "powershell",
+      "script": "F:\\Packer\\Win10_20H2\\Scripts\\Winupdate.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0
+      ]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "1h"
+    },
     {
       "type": "file",
       "source": "Windows10/startmenu.xml",
       "destination": "C:\\startmenu.xml"
     },
- 
     {
       "type": "powershell",
       "script": "Scripts/provision.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "valid_exit_codes": [
+        0
+      ]
+    },
+    {
+      "type": "powershell",
+      "script": "Scripts/Winupdate.ps1",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant",
       "valid_exit_codes": [
@@ -89,12 +89,10 @@
         0
       ]
     },
-
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
     },
-
     {
       "type": "powershell",
       "script": "Scripts/Cleanup.ps1",
@@ -118,5 +116,4 @@
       ]
     }
   ]
-   
 }
