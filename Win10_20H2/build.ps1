@@ -2,13 +2,13 @@
 #Defines Variables
 ###########################
 $WorkingDirectory = "C:\ISOS"
-$ImagePath = "C:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\21H1 DK.vhdx"
-$ImageOutput = "C:\tmp\Win10_21H1_DA.wim"
+$ImagePath = "F:\Packer\Win10_20H2\output-hyperv-iso\Virtual Hard Disks\21H2 DK.vhdx"
+$ImageOutput = "C:\tmp\Win10_21H2_DA.wim"
 $MountPath = "C:\mount"
-$packerArgument = "build -var-file windows10/variables_dk.json windows10/packer.json"
+$packerArgument = "build -var-file F:\Packer\Win10_20H2\windows10\Variables_dk.json F:\Packer\Win10_20H2\windows10\packer.json"
 $convertToWIM = $false
 $port = "8080"
-$wimName = "Win10_21H1_DA"
+$wimName = "Win10_21H2_DA"
 ###########################
 
 write-host "Warning this script will kill all python processes when done" -ForegroundColor Red
