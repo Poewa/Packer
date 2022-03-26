@@ -28,7 +28,3 @@ net stop winrm
 sc.exe config winrm start= auto
 net start winrm
 
-
-
-#This might be rendundant
-#Start-Job -ScriptBlock { C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoLogo -ExecutionPolicy Bypass -File a:\winrm.ps1 }

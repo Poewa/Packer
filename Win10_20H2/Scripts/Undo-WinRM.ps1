@@ -40,35 +40,35 @@
   Download dynamically from github and run immediately.
 #>
 Param (
-    [switch]$RunImmediately,
-    [switch]$RemoveShutdownScriptConfig,
-    [switch]$Version
+  [switch]$RunImmediately,
+  [switch]$RemoveShutdownScriptConfig,
+  [switch]$Version
 )
 
 $ThisScriptVersion = '1.2.0'
 
 If ($version) {  
-    Write-Host "$ThisScriptVersion"
-    Exit 0
+  Write-Host "$ThisScriptVersion"
+  Exit 0
 }
 
 Function Setup-Undo {
 
-    Write-Host "`r`n`r`nUndo-WinRMConfig Version $ThisScriptVersion`r`n`r`n"
+  Write-Host "`r`n`r`nUndo-WinRMConfig Version $ThisScriptVersion`r`n`r`n"
 
-    #This has to work for Win7 (no get-ciminstance) and Nano (no get-wmiobject) - each of which specially construct win32_operatingsystem.version to handle before and after Windows 10 version numbers (which are in different registry keys)
-    If ($psversiontable.psversion.major -lt 3)
-    { $OSMajorMinorVersionString = @(([version](Get-WMIObject Win32_OperatingSystem).version).major, ([version](Get-WMIObject Win32_OperatingSystem).version).minor) -join '.' }
-    Else 
-    { $OSMajorMinorVersionString = @(([version](Get-CIMInstance Win32_OperatingSystem).version).major, ([version](Get-CIMInstance Win32_OperatingSystem).version).minor) -join '.' }
+  #This has to work for Win7 (no get-ciminstance) and Nano (no get-wmiobject) - each of which specially construct win32_operatingsystem.version to handle before and after Windows 10 version numbers (which are in different registry keys)
+  If ($psversiontable.psversion.major -lt 3)
+  { $OSMajorMinorVersionString = @(([version](Get-WMIObject Win32_OperatingSystem).version).major, ([version](Get-WMIObject Win32_OperatingSystem).version).minor) -join '.' }
+  Else 
+  { $OSMajorMinorVersionString = @(([version](Get-CIMInstance Win32_OperatingSystem).version).major, ([version](Get-CIMInstance Win32_OperatingSystem).version).minor) -join '.' }
 
-    If (!(Test-Path "variable:Pristine-WSMan-${OSMajorMinorVersionString}.reg")) { 
-        Throw "Undo-WinRMConfig does not have Pristine WSMan .REG file for your OS version $OSMajorMinorVersionString, if you would like to create and contribute one, please see: "
-        Exit 5
-    }
+  If (!(Test-Path "variable:Pristine-WSMan-${OSMajorMinorVersionString}.reg")) { 
+    Throw "Undo-WinRMConfig does not have Pristine WSMan .REG file for your OS version $OSMajorMinorVersionString, if you would like to create and contribute one, please see: "
+    Exit 5
+  }
 
-    #Build the undo script based on parameters
-    [string]$UndoWinRMScript = @'
+  #Build the undo script based on parameters
+  [string]$UndoWinRMScript = @'
 
   If (!$PSScriptRoot) {$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent}
 
@@ -109,28 +109,28 @@ Function Setup-Undo {
   }
 '@
 
-    If ($RunImmediately) {
-        Write-Output 'Undoing WinRM Config Right Now (do NOT execute this over remoting or this code will not complete)...'  
-        Invoke-Command -ScriptBlock [Scriptblock]::Create($UndoWinRMScript)
-        exit 0
-    }
-    else {
-        Write-Output 'Undoing WinRM Config On Next Shutdown'
-    }
+  If ($RunImmediately) {
+    Write-Output 'Undoing WinRM Config Right Now (do NOT execute this over remoting or this code will not complete)...'  
+    Invoke-Command -ScriptBlock [Scriptblock]::Create($UndoWinRMScript)
+    exit 0
+  }
+  else {
+    Write-Output 'Undoing WinRM Config On Next Shutdown'
+  }
 
-    #Write a file and call it in a machine shutdown script
-    $psScriptsFile = "$env:windir\System32\GroupPolicy\Machine\Scripts\psscripts.ini"
-    $Key1 = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown\0'
-    $Key2 = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Shutdown\0'
-    $keys = @($key1, $key2)
-    $scriptpath = "$env:windir\System32\GroupPolicy\Machine\Scripts\Shutdown\Undo-WinRMConfig.ps1"
-    $scriptfilename = (Split-Path -leaf $scriptpath)
-    $ScriptFolder = (Split-Path -parent $scriptpath)
-    $FileContents = Get-Variable -name "Pristine-WSMan-${OSMajorMinorVersionString}.reg" -ValueOnly
-    New-Item -ItemType Directory -Force -Path $ScriptFolder
-    Set-Content -Path "$ScriptFolder\Pristine-WSMan-${OSMajorMinorVersionString}.reg" -Value $FileContents
+  #Write a file and call it in a machine shutdown script
+  $psScriptsFile = "$env:windir\System32\GroupPolicy\Machine\Scripts\psscripts.ini"
+  $Key1 = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown\0'
+  $Key2 = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Shutdown\0'
+  $keys = @($key1, $key2)
+  $scriptpath = "$env:windir\System32\GroupPolicy\Machine\Scripts\Shutdown\Undo-WinRMConfig.ps1"
+  $scriptfilename = (Split-Path -leaf $scriptpath)
+  $ScriptFolder = (Split-Path -parent $scriptpath)
+  $FileContents = Get-Variable -name "Pristine-WSMan-${OSMajorMinorVersionString}.reg" -ValueOnly
+  New-Item -ItemType Directory -Force -Path $ScriptFolder
+  Set-Content -Path "$ScriptFolder\Pristine-WSMan-${OSMajorMinorVersionString}.reg" -Value $FileContents
 
-    $selfdeletescript = @"
+  $selfdeletescript = @"
   Start-Sleep -milliseconds 500
   Remove-Item -Path "$key1" -Force -Recurse -ErrorAction SilentlyContinue
   Remove-Item -Path "$key2" -Force -Recurse -ErrorAction SilentlyContinue
@@ -143,49 +143,49 @@ Function Setup-Undo {
   }
 "@
 
-    $selfdeletescript = [Scriptblock]::Create($selfdeletescript)
+  $selfdeletescript = [Scriptblock]::Create($selfdeletescript)
 
-    If ($RemoveShutdownScriptConfig) {
-        Write-Host "Removing previously setup shutdown script"
-        Invoke-Command -ScriptBlock $selfdeletescript
-        exit $?
-    }
+  If ($RemoveShutdownScriptConfig) {
+    Write-Host "Removing previously setup shutdown script"
+    Invoke-Command -ScriptBlock $selfdeletescript
+    exit $?
+  }
 
-    #Add the cleanup script block as a scheduled job executed immediately at the end of the shutdown script (if we aren't running immediately)
-    $UndoWinRMScript += "Register-ScheduledJob -Name CleanUpWinRM -RunNow -ScheduledJobOption @{RunElevated=$True;ShowInTaskScheduler=$True;RunWithoutNetwork=$True} -ScriptBlock $selfdeletescript"
+  #Add the cleanup script block as a scheduled job executed immediately at the end of the shutdown script (if we aren't running immediately)
+  $UndoWinRMScript += "Register-ScheduledJob -Name CleanUpWinRM -RunNow -ScheduledJobOption @{RunElevated=$True;ShowInTaskScheduler=$True;RunWithoutNetwork=$True} -ScriptBlock $selfdeletescript"
 
-    Write-Host "Creating $scriptpath, with the following contents:"
-    Write-Host '*******************'
-    Write-Host "$UndoWinRMScript"
-    Write-Host '*******************`r`n`r`n'
-    If (!(Test-Path $ScriptFolder)) { New-Item $ScriptFolder -type Directory -force | Out-null }
-    Set-Content -path $scriptpath -value $UndoWinRMScript
+  Write-Host "Creating $scriptpath, with the following contents:"
+  Write-Host '*******************'
+  Write-Host "$UndoWinRMScript"
+  Write-Host '*******************`r`n`r`n'
+  If (!(Test-Path $ScriptFolder)) { New-Item $ScriptFolder -type Directory -force | Out-null }
+  Set-Content -path $scriptpath -value $UndoWinRMScript
 
-    Foreach ($Key in $keys) {
-        Write-Host "Creating $Key"
-        New-Item -Path $key -Force | out-null
-        New-ItemProperty -Path $key -Name GPO-ID -Value LocalGPO -Force | out-null
-        New-ItemProperty -Path $key -Name SOM-ID -Value Local -Force | out-null
-        New-ItemProperty -Path $key -Name FileSysPath -Value "$env:windir\System32\GroupPolicy\Machine" -Force | out-null
-        New-ItemProperty -Path $key -Name DisplayName -Value "Local Group Policy" -Force | out-null
-        New-ItemProperty -Path $key -Name GPOName -Value "Local Group Policy" -Force | out-null
-        New-ItemProperty -Path $key -Name PSScriptOrder -Value 1 -PropertyType "DWord" -Force | out-null
+  Foreach ($Key in $keys) {
+    Write-Host "Creating $Key"
+    New-Item -Path $key -Force | out-null
+    New-ItemProperty -Path $key -Name GPO-ID -Value LocalGPO -Force | out-null
+    New-ItemProperty -Path $key -Name SOM-ID -Value Local -Force | out-null
+    New-ItemProperty -Path $key -Name FileSysPath -Value "$env:windir\System32\GroupPolicy\Machine" -Force | out-null
+    New-ItemProperty -Path $key -Name DisplayName -Value "Local Group Policy" -Force | out-null
+    New-ItemProperty -Path $key -Name GPOName -Value "Local Group Policy" -Force | out-null
+    New-ItemProperty -Path $key -Name PSScriptOrder -Value 1 -PropertyType "DWord" -Force | out-null
 
-        $key = "$key\0"
-        New-Item -Path $key -Force | out-null
-        New-ItemProperty -Path $key -Name "Script" -Value $scriptfilename -Force | out-null
-        New-ItemProperty -Path $key -Name "Parameters" -Value $parameters -Force | out-null
-        New-ItemProperty -Path $key -Name "IsPowershell" -Value 1 -PropertyType "DWord" -Force | out-null
-        New-ItemProperty -Path $key -Name "ExecTime" -Value 0 -PropertyType "QWord" -Force | out-null
-    }
+    $key = "$key\0"
+    New-Item -Path $key -Force | out-null
+    New-ItemProperty -Path $key -Name "Script" -Value $scriptfilename -Force | out-null
+    New-ItemProperty -Path $key -Name "Parameters" -Value $parameters -Force | out-null
+    New-ItemProperty -Path $key -Name "IsPowershell" -Value 1 -PropertyType "DWord" -Force | out-null
+    New-ItemProperty -Path $key -Name "ExecTime" -Value 0 -PropertyType "QWord" -Force | out-null
+  }
 
-    Write-Host "Updating $psScriptsFile"
-    If (!(Test-Path $psScriptsFile)) { New-Item $psScriptsFile -type file -force }
-    "[Shutdown]" | Out-File $psScriptsFile
-    "0CmdLine=$scriptfilename" | Out-File $psScriptsFile -Append
-    "0Parameters=$parameters" | Out-File $psScriptsFile -Append
+  Write-Host "Updating $psScriptsFile"
+  If (!(Test-Path $psScriptsFile)) { New-Item $psScriptsFile -type file -force }
+  "[Shutdown]" | Out-File $psScriptsFile
+  "0CmdLine=$scriptfilename" | Out-File $psScriptsFile -Append
+  "0Parameters=$parameters" | Out-File $psScriptsFile -Append
 
-    Write-Host "`r`n`r`nUndo-WinRMConfig (v${ThisScriptVersion}) is staged to run at next shutdown.  To unstage, run 'Undo-WinRMConfig -RemoveShutdownScriptConfig'"
+  Write-Host "`r`n`r`nUndo-WinRMConfig (v${ThisScriptVersion}) is staged to run at next shutdown.  To unstage, run 'Undo-WinRMConfig -RemoveShutdownScriptConfig'"
 }
 
 ${Pristine-WSMan-10.0.reg} = @'

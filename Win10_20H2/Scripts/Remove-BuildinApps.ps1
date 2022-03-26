@@ -33,46 +33,47 @@ Begin {
     # White list of appx packages to keep installed
     $WhiteListedApps = New-Object -TypeName System.Collections.ArrayList
     $WhiteListedApps.AddRange(@(
-        "Microsoft.DesktopAppInstaller",
-        "Microsoft.Office.OneNote",
-        "Microsoft.Messaging", 
-        "Microsoft.MSPaint",
-        "Microsoft.Windows.Photos",
-        "Microsoft.StorePurchaseApp",
-        "Microsoft.MicrosoftOfficeHub",
-        "Microsoft.MicrosoftStickyNotes",
-        "Microsoft.WindowsAlarms",
-        "Microsoft.WindowsCalculator", 
-        "Microsoft.WindowsSoundRecorder", 
-        "Microsoft.WindowsStore"
-    ))
+            "Microsoft.DesktopAppInstaller",
+            "Microsoft.Office.OneNote",
+            "Microsoft.Messaging", 
+            "Microsoft.MSPaint",
+            "Microsoft.Windows.Photos",
+            "Microsoft.StorePurchaseApp",
+            "Microsoft.MicrosoftOfficeHub",
+            "Microsoft.MicrosoftStickyNotes",
+            "Microsoft.WindowsAlarms",
+            "Microsoft.WindowsCalculator", 
+            "Microsoft.WindowsSoundRecorder", 
+            "Microsoft.WindowsStore",
+            "Microsoft.WindowsTerminal"
+        ))
 
     # Windows 10 version 1809
     $WhiteListedApps.AddRange(@(
-        "Microsoft.ScreenSketch",
-        "Microsoft.HEIFImageExtension",
-        "Microsoft.VP9VideoExtensions",
-        "Microsoft.WebMediaExtensions",
-        "Microsoft.WebpImageExtension"
-    ))
+            "Microsoft.ScreenSketch",
+            "Microsoft.HEIFImageExtension",
+            "Microsoft.VP9VideoExtensions",
+            "Microsoft.WebMediaExtensions",
+            "Microsoft.WebpImageExtension"
+        ))
 
     # Windows 10 version 1903
     # No new apps
 
     # Windows 10 version 1909
     $WhiteListedApps.AddRange(@(
-        "Microsoft.Outlook.DesktopIntegrationServicess"
-    ))
+            "Microsoft.Outlook.DesktopIntegrationServicess"
+        ))
 
     # Windows 10 version 2004
     $WhiteListedApps.AddRange(@(
-        "Microsoft.VCLibs.140.00"
-    ))
+            "Microsoft.VCLibs.140.00"
+        ))
 
     # Windows 10 version 20H2
     $WhiteListedApps.AddRange(@(
-        "Microsoft.MicrosoftEdge.Stable"
-    ))
+            "Microsoft.MicrosoftEdge.Stable"
+        ))
 }
 Process {
     # Initial logging
